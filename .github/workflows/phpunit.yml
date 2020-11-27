@@ -1,0 +1,16 @@
+name: Tests
+
+on: push
+
+jobs:
+  tdd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: php-actions/composer@v4
+      - name: Run Tests
+        uses: php-actions/phpunit@v1
+
