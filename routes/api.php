@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+use App\Http\Controllers\TaskController;
+
+Route::get('tasks', [TaskController::class, 'index']);
+Route::post('tasks', [TaskController::class, 'store']);
+Route::get('tasks/{id}', [TaskController::class, 'show']);
