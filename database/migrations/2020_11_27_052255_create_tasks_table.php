@@ -18,9 +18,9 @@ class CreateTasksTable extends Migration
             $table->text('name');
             $table->boolean('active');
             $table->boolean('completed');
-            $table->dateTimeTz('completionDate')->nullable();
-            $table->dateTimeTz('dropDate')->nullable();
-            $table->dateTimeTz('dueDate')->nullable();
+            $table->dateTime('completionDate')->nullable();
+            $table->dateTime('dropDate')->nullable();
+            $table->dateTime('dueDate')->nullable();
             $table->integer('estimatedMinutes')->nullable();
             $table->boolean('flagged');
             $table->boolean('inInbox');
