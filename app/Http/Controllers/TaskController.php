@@ -6,11 +6,25 @@ use Illuminate\Http\Request;
 
 use App\Models\Task;
 
+use Illuminate\Support\Facades\DB;
+
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Task::all();
+        if ($request->query('start') == null || $request->query('end') == null)
+            return Task::orderBy('dueDate')->get();
+
+        $start = strtotime($request->query('start'));
+        $end = strtotime($request->query('end'));
+
+        return Task::where('dueDate', '<=', date("Y-m-d H:i:s", $end))
+            ->where(function($query) use($start) {
+                $query->where('completionDate', null)
+                ->orWhere('completionDate', '>=', date("Y-m-d H:i:s", $start));
+            })
+            ->orderBy('dueDate')
+            ->get();
     }
 
     /**
