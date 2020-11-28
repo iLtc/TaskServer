@@ -136,6 +136,8 @@
                 }
             }
 
+            completedData.push({x: new Date(), y: totalMinutes})
+
             console.log(completedData)
 
             burndown_chart(guidelineData, completedData)
