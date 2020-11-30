@@ -33,7 +33,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Due Date</th>
-                    <th>Estimated Minutes</th>
+                    <th>Estimated Time</th>
                 </tr>
                 </thead>
                 <tbody id="incomplate-task-table"></tbody>
@@ -44,7 +44,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Completion Date</th>
-                    <th>Estimated Minutes</th>
+                    <th>Estimated Time</th>
                 </tr>
                 </thead>
                 <tbody id="complated-task-table"></tbody>
@@ -100,10 +100,14 @@
 
             console.log(totalMinutes)
 
-            let guidelineData = [
-                {x: startDate, y: totalMinutes},
-                {x: endDate, y: 0}
-            ]
+            let guidelineData = [{x: startDate, y: (totalMinutes / 60).toFixed(2)}]
+
+            const days = Math.round((endDate - startDate) / 1000 / 3600 / 24)
+            const minutesPerDay = totalMinutes / days
+
+            for (let d = 1; d <= days; d ++) {
+                guidelineData.push({x: startDate.addDays(d), y: ((totalMinutes - minutesPerDay * d) / 60).toFixed(2)})
+            }
 
             console.log(guidelineData)
 
@@ -116,27 +120,27 @@
                 let date = new Date(task.dueDate)
 
                 $("#incomplate-task-table").append(
-                    "<tr><td>" + task.name + "</td><td>" + date.toLocaleString() + "</td><td>" + task.estimatedMinutes + "</td></tr>"
+                    `<tr><td>${task.name}</td><td>${date.toLocaleString()}</td><td>${formatTime(task.estimatedMinutes)}</td></tr>`
                 )
             }
 
-            let completedData = [{x: startDate, y: totalMinutes}]
+            let completedData = [{x: startDate, y: (totalMinutes / 60).toFixed(2)}]
 
             for (task of completed) {
                 let date = new Date(task.completionDate)
 
                 $("#complated-task-table").append(
-                    "<tr><td>" + task.name + "</td><td>" + date.toLocaleString() + "</td><td>" + task.estimatedMinutes + "</td></tr>"
+                    `<tr><td>${task.name}</td><td>${date.toLocaleString()}</td><td>${formatTime(task.estimatedMinutes)}</td></tr>`
                 )
 
                 if (task.estimatedMinutes !== null) {
-                    completedData.push({x: date, y: totalMinutes})
+                    completedData.push({x: date, y: (totalMinutes / 60).toFixed(2)})
                     totalMinutes -= task.estimatedMinutes
-                    completedData.push({x: date, y: totalMinutes})
+                    completedData.push({x: date, y: (totalMinutes / 60).toFixed(2)})
                 }
             }
 
-            completedData.push({x: new Date(), y: totalMinutes})
+            completedData.push({x: new Date(), y: (totalMinutes / 60).toFixed(2)})
 
             console.log(completedData)
 
@@ -231,6 +235,19 @@
                 $("#end").val(end)
                 update()
             }
+        }
+
+        function formatTime(m) {
+            const hour = Math.floor(m / 60)
+            const minute = m % 60
+
+            return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+        }
+
+        Date.prototype.addDays = function(days) {
+            const date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
         }
 
         checkCookit()
