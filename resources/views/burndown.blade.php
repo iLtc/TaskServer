@@ -4,51 +4,62 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
         <title>Burndown Chart</title>
 
         <style>
-            .table-container table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .table-container table, th, td {
-                border: 1px solid black;
+            .chart-container canvas {
+                max-width: 1500px;
+                display: block;
+                margin: auto;
             }
         </style>
     </head>
     <body>
-    <div class="container">
-        <div class="form-container">
-            <label for="start">Start Date:</label>
-            <input type="date" id="start" name="start">
-            <label for="end">End Date:</label>
-            <input type="date" id="end" name="end">
-        </div>
+    <div>
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">Burndown Chart</span>
+
+            <div class="form-inline">
+                <label for="start" class="mr-sm-2">Start Date: </label>
+                <input type="date" id="start" name="start" class="form-control mr-sm-2">
+                <label for="end" class=" mr-sm-2">End Date:</label>
+                <input type="date" id="end" name="end" class="form-control mr-sm-2">
+                <button id="refresh-btn" class="btn btn-primary">Refresh</button>
+            </div>
+        </nav>
+
         <div class="chart-container">
             <canvas id="burndown-chat"></canvas>
         </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Due Date</th>
-                    <th>Estimated Time</th>
-                </tr>
-                </thead>
-                <tbody id="incomplate-task-table"></tbody>
-            </table>
-            <hr>
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Completion Date</th>
-                    <th>Estimated Time</th>
-                </tr>
-                </thead>
-                <tbody id="complated-task-table"></tbody>
-            </table>
+
+        <div class="table-container container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead>
+                        <tr>
+                            <th style="width: 50%;">Name</th>
+                            <th style="width: 35%;">Due Date</th>
+                            <th>Estimated Time</th>
+                        </tr>
+                        </thead>
+                        <tbody id="incomplate-task-table"></tbody>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead>
+                        <tr>
+                            <th style="width: 50%;">Name</th>
+                            <th style="width: 35%;">Completion Date</th>
+                            <th>Estimated Time</th>
+                        </tr>
+                        </thead>
+                        <tbody id="complated-task-table"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -173,10 +184,6 @@
                 },
                 options: {
                     responsive: true,
-                    title:      {
-                        display: true,
-                        text:    "Burndown Chart"
-                    },
                     scales:     {
                         xAxes: [{
                             type:       "time",
@@ -249,6 +256,10 @@
             date.setDate(date.getDate() + days);
             return date;
         }
+
+        $("#refresh-btn").click(function () {
+            update()
+        })
 
         checkCookit()
     </script>
