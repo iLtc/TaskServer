@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,4 +25,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/burndown', function () {
     return view('burndown');
+})->middleware('auth');
+
+Route::get('/token', function () {
+    $user = Auth::user();
+    $user->tokens()->delete();
+    $token = $user->createToken('burndown-api');
+
+    return $token->plainTextToken;
 })->middleware('auth');
