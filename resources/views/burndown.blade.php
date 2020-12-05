@@ -262,6 +262,8 @@
         })
 
         checkCookit()
+
+        setInterval(() => update(), 1000 * 60 * 15)
     </script>
     </body>
 </html>
