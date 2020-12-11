@@ -127,11 +127,15 @@
             $("#incomplate-task-table").html("")
             $("#complated-task-table").html("")
 
+            const now = new Date()
+
             for (task of incomplete) {
                 let date = new Date(task.dueDate)
+                let trClass = (date <= now) ? "table-warning" : ""
+                let tdClass = (task.estimatedMinutes === null) ? "table-danger" : ""
 
                 $("#incomplate-task-table").append(
-                    `<tr><td>${task.name}</td><td>${date.toLocaleString()}</td><td>${formatTime(task.estimatedMinutes)}</td></tr>`
+                    `<tr class="${trClass}"><td>${task.name}</td><td>${date.toLocaleString()}</td><td class="${tdClass}">${formatTime(task.estimatedMinutes)}</td></tr>`
                 )
             }
 
@@ -139,9 +143,10 @@
 
             for (task of completed) {
                 let date = new Date(task.completionDate)
+                let tdClass = (task.estimatedMinutes === null) ? "table-danger" : ""
 
                 $("#complated-task-table").append(
-                    `<tr><td>${task.name}</td><td>${date.toLocaleString()}</td><td>${formatTime(task.estimatedMinutes)}</td></tr>`
+                    `<tr><td>${task.name}</td><td>${date.toLocaleString()}</td><td class="${tdClass}">${formatTime(task.estimatedMinutes)}</td></tr>`
                 )
 
                 if (task.estimatedMinutes !== null) {
