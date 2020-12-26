@@ -18,10 +18,20 @@ class TaskController extends Controller
         $start = strtotime($request->query('start'));
         $end = strtotime($request->query('end'));
 
-        return Task::where('dueDate', '<=', date("Y-m-d H:i:s", $end))
-            ->where(function($query) use($start) {
+        return Task::where(function($query) use($end) {
+                $query->where('dueDate', '<=', date("Y-m-d H:i:s", $end))
+                    ->where('completionDate', null);
+            })
+            ->orWhere(function($query) use($start, $end) {
+                $query->where('completionDate', '>=', date("Y-m-d H:i:s", $start))
+                    ->where('completionDate', '<=', date("Y-m-d H:i:s", $end));
+            })
+            ->orWhere(function($query) {
                 $query->where('completionDate', null)
-                ->orWhere('completionDate', '>=', date("Y-m-d H:i:s", $start));
+                    ->where(function($query) {
+                        $query->where('flagged', 1)
+                            ->orWhere('inInbox', 1);
+                    });
             })
             ->orderBy('dueDate')
             ->get();
