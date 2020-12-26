@@ -92,14 +92,15 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        Task::destroy($id);
+        return ['status' => 'success'];
+    }
+
+    public function truncate()
+    {
+        Task::truncate();
+        return ['status' => 'success'];
     }
 }
