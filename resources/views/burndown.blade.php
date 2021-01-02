@@ -156,7 +156,11 @@
                 }
             }
 
-            completedData.push({x: new Date(), y: (totalMinutes / 60).toFixed(2)})
+            if (now < endDate) {
+                completedData.push({x: now, y: (totalMinutes / 60).toFixed(2)})
+            } else {
+                completedData.push({x: endDate, y: (totalMinutes / 60).toFixed(2)})
+            }
 
             console.log(completedData)
 
