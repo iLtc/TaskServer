@@ -81,8 +81,8 @@
             setCookie("startDate", start, 30)
             setCookie("endDate", end, 30)
 
-            const startDate = new Date(start + " 00:00:00")
-            const endDate = new Date(end + " 23:59:59")
+            const startDate = new Date(start + "T00:00:00")
+            const endDate = new Date(end + "T23:59:59")
 
             $.get("/api/tasks?start=" + startDate.toISOString() + "&end=" + endDate.toISOString(), function (data) {
                 process(data, startDate, endDate)
